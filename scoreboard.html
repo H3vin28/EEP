@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickleball Scorer</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- AdminLTE 3 -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+        .score-card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .team-header {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .player-name {
+            font-size: 30px;
+        }
+        .score-number {
+            font-size: 100px;
+            line-height: 1;
+            font-weight: bold;
+        }
+        .score-button {
+            width: 100%;
+            height: 65px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .server-badge {
+            font-size: 15px;
+        }
+        .game-score {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .match-status {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .point-history {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .history-item {
+            font-size: 14px;
+        }
+        .team-a-bg {
+            background: #007bff;
+            color: white;
+        }
+        .team-b-bg {
+            background: #28a745;
+            color: white;
+        }
+        .winner {
+            border: 5px solid #ffc107 !important;
+        }
+        @media(max-width: 768px) {
+            .score-number {
+                font-size: 70px;
+            }
+            .team-header {
+                font-size: 20px;
+            }
+            .player-name {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body class="hold-transition layout-top-nav">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md navbar-dark navbar-primary">
+            <div class="container">
+                <a href="#" class="navbar-brand">
+                    <i class="fas fa-table-tennis"></i>
+                    <span class="brand-text font-weight-light">
+                        Pickleball Scorer
+                    </span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="container-fluid pt-3">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-cog"></i>
+                                Match Settings
+                            </h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card card-danger">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <i class="fas fa-users"></i>
+                                                TEAM A
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Team Name:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="TeamAName" class="form-control" placeholder="Team Name" value="Team A">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Name of Player 1:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="teamAPlayer1" class="form-control" placeholder="Player 1" value="Player 1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Name of Player 2:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="teamAPlayer2" class="form-control" placeholder="Player 2" value="Player 2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="card card-success">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <i class="fas fa-users"></i>
+                                                TEAM B
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Team Name:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="TeamBName" class="form-control" placeholder="Team Name" value="Team A">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Name of Player 1:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="teamBPlayer1" class="form-control" placeholder="Player 1" value="Player 1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Name of Player 2:</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="teamBPlayer2" class="form-control" placeholder="Player 2" value="Player 2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Point Target</label>
+                                    <select id="pointTarget" class="form-control">
+                                        <option value="11">11 Points</option>
+                                        <option value="15">15 Points</option>
+                                        <option value="21">21 Points</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>Winning Rule</label>
+                                    <select id="winningRule" class="form-control">
+                                        <option value="win2">
+                                            Win by 2
+                                        </option>
+                                        <option value="target">
+                                            Point Target First
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>Starting Server</label>
+                                    <select id="startingServer" class="form-control">
+                                        <option value="A">Team A</option>
+                                        <option value="B">Team B</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>&nbsp;</label>
+                                    <button id="startMatch" class="btn btn-primary btn-block">
+                                        <i class="fas fa-play"></i>
+                                        Start / Reset Match
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card card-outline card-dark">
+                                <div class="card-body text-center">
+                                    <span class="mr-3">
+                                        <strong>Game:</strong>
+                                        <span id="gameNumber">1</span>
+                                    </span>
+                                    <span class="mr-3">
+                                        <strong>Target:</strong>
+                                        <span id="targetDisplay">11</span>
+                                    </span>
+                                    <span>
+                                        <strong>Status:</strong>
+                                        <span id="matchStatus" class="badge badge-success">
+                                            IN PROGRESS
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div id="teamACard" class="card score-card card-danger">
+                                <div class="card-header team-a-bg">
+                                    <h3 class="card-title team-header" id="teamANameText"></h3>
+                                </div>
+
+                                <div class="card-body text-center">
+                                    <div id="teamAPlayers" class="player-name mb-0">
+                                        Player A1 & Player A2
+                                    </div>
+                                    <div id="scoreA" class="score-number">0</div>
+
+                                    <div class="mt-3">
+                                        <span id="serverA" class="badge badge-warning server-badge">
+                                            <i class="fas fa-table-tennis"></i>
+                                            SERVER
+                                        </span>
+                                        <span id="serverNumberA" class="badge badge-light server-badge">
+                                            Player 1
+                                        </span>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-8">
+                                            <button id="addA"
+                                                    class="btn btn-primary score-button">
+                                                <i class="fas fa-plus"></i>
+                                                POINT
+                                            </button>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <button id="minusA" class="btn btn-secondary score-button">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="card card-warning score-card">
+                                <div class="card-header  d-flex justify-content-center align-items-center">
+                                    <h1 class="card-title score-number" id="serveNumber">2</h1></center>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div id="teamBCard" class="card score-card card-success">
+                                <div class="card-header team-b-bg">
+                                    <h3 class="card-title team-header" id="teamBNameText"></h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div id="teamBPlayers" class="player-name mb-0">
+                                        Player B1 & Player B2
+                                    </div>
+                                    <div id="scoreB" class="score-number">0</div>
+                                    <div class="mt-3">
+                                        <span id="serverB" class="badge badge-warning server-badge">
+                                            <i class="fas fa-table-tennis"></i>
+                                            SERVER
+                                        </span>
+                                        <span id="serverNumberB"
+                                            class="badge badge-light server-badge">
+                                            Player 1
+                                        </span>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-8">
+                                            <button id="addB" class="btn btn-primary score-button">
+                                                <i class="fas fa-plus"></i>POINT
+                                            </button>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <button id="minusB" class="btn btn-secondary score-button">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-warning">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-table-tennis"></i>Serving Team
+                            </h3>
+                        </div>
+
+                        <div class="card-body text-center">
+                            <h3 id="currentServer">
+                                Team A - Server #1
+                            </h3>
+
+                            <button id="switchServer" class="btn btn-warning">
+                                <i class="fas fa-exchange-alt"></i>Sideout
+                            </button>
+                            <button id="secondServe" class="btn btn-warning" disabled>
+                                <i class="fas fa-angle-double-right"></i>Second Serve
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button id="undoPoint" class="btn btn-warning btn-lg btn-block">
+                                <i class="fas fa-undo"></i>
+                                UNDO LAST POINT
+                            </button>
+                        </div>
+
+                        <div class="col-md-4">
+                            <button id="newGame" class="btn btn-info btn-lg btn-block">
+                                <i class="fas fa-sync"></i>
+                                NEW GAME
+                            </button>
+                        </div>
+
+                        <div class="col-md-4">
+                            <button id="resetMatch" class="btn btn-danger btn-lg btn-block">
+                                <i class="fas fa-trash"></i>
+                                RESET MATCH
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card card-dark mt-4">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-trophy"></i>
+                                Match Score
+                            </h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <h4>TEAM A</h4>
+                                    <div id="gamesA" class="game-score">0 Games</div>
+                                </div>
+
+                                <div class="col-6">
+                                    <h4>TEAM B</h4>
+                                    <div id="gamesB" class="game-score">0 Games</div>
+                                </div>
+                            </div>
+                            <hr>
+                            <h5 class="text-center">Game History</h5>
+
+                            <div id="gameHistory" class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Game</th>
+                                            <th>Team A</th>
+                                            <th>Team B</th>
+                                            <th>Winner</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historyBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-history"></i>
+                                Point History
+                            </h3>
+                        </div>
+                        <div class="card-body point-history">
+                            <ul id="pointHistory" class="list-group"> </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AdminLTE -->
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+
+<script>
+
+$(document).ready(function () {
+    let teamAFServer = 1;
+    let teamBFServer = 1;
+
+    let firstServePositionA = 1;
+    let firstServePositionB = 1;
+
+    let teamAFServerName1 = $("#teamAPlayer1").val();
+    let teamAFServerName2 = $("#teamAPlayer2").val();
+    let teamBFServerName1 = $("#teamBPlayer1").val();
+    let teamBFServerName2 = $("#teamBPlayer2").val();
+
+    let textServerA = teamAFServerName1;
+    let textServerB = teamBFServerName1;
+
+    let scoreA = 0;
+    let scoreB = 0;
+
+    let gamesA = 0;
+    let gamesB = 0;
+
+    let gameNumber = 1;
+
+    let pointTarget = 11;
+    let winningRule = "win2";
+    let servingTeam = "A";
+    let serverNumber = 1;
+
+    let gameOver = false;
+    let pointHistory = [];
+    let gameHistory = [];
+
+    function initializeMatch() {
+        scoreA = 0;
+        scoreB = 0;
+
+        gamesA = 0;
+        gamesB = 0;
+
+        gameNumber = 1;
+
+        pointTarget = parseInt($("#pointTarget").val());
+        winningRule = $("#winningRule").val();
+        servingTeam = $("#startingServer").val();
+        serverNumber = 1;
+        gameOver = false;
+        pointHistory = [];
+        gameHistory = [];
+        $("#serverNumberA").text(textServerA);
+        $("#serverNumberB").text(textServerB);
+        updatePlayerNames();
+        updateDisplay();
+        saveData();
+    }
+
+    function updatePlayerNames() {
+        let tname1 = $("#TeamAName").val() || "Team A";
+        let tname2 = $("#TeamBName").val() || "Team B";
+
+        let a1 = $("#teamAPlayer1").val() || "Player A1";
+        let a2 = $("#teamAPlayer2").val() || "Player A2";
+
+        let b1 = $("#teamBPlayer1").val() || "Player B1";
+        let b2 = $("#teamBPlayer2").val() || "Player B2";
+
+        $("#teamAPlayers").text(a1 + " & " + a2);
+        $("#teamBPlayers").text(b1 + " & " + b2);
+        $("#teamANameText").text(tname1);
+        $("#teamBNameText").text(tname2);
+    }
+
+    function addPoint(team) {
+        if (gameOver) {
+            return;
+        }
+        pointHistory.push({
+            scoreA: scoreA,
+            scoreB: scoreB,
+            servingTeam: servingTeam,
+            serverNumber: serverNumber
+        });
+
+        if (team === "A") {
+            scoreA++;
+            if (servingTeam === "A") {
+                serverNumber = serverNumber === 1 ? 2 : 1;
+            }
+        } else {
+            scoreB++;
+            if (servingTeam === "B") {
+                serverNumber = serverNumber === 1 ? 2 : 1;
+            }
+        }
+
+        if (team !== servingTeam) {
+            servingTeam = team;
+            serverNumber = 1;
+        }
+
+        addPointHistory(team);
+        checkWinner();
+        updateDisplay();
+        saveData();
+    }
+
+    function removePoint(team) {
+        if (gameOver) {
+            return;
+        }
+
+        if (team === "A" && scoreA > 0) {
+            scoreA--;
+        }
+
+        if (team === "B" && scoreB > 0) {
+            scoreB--;
+        }
+
+        updateDisplay();
+        saveData();
+    }
+
+    function checkWinner() {
+        let winner = null;
+        if (winningRule === "target") {
+            if (scoreA >= pointTarget) {
+                winner = "A";
+            }
+
+            if (scoreB >= pointTarget) {
+                winner = "B";
+            }
+        } else {
+            if (scoreA >= pointTarget && scoreA - scoreB >= 2) {
+                winner = "A";
+            }
+
+            if (scoreB >= pointTarget && scoreB - scoreA >= 2 ) {
+                winner = "B";
+            }
+        }
+
+        if (winner !== null) {
+            finishGame(winner);
+        }
+    }
+
+    function finishGame(winner) {
+        gameOver = true;
+        if (winner === "A") {
+            gamesA++;
+        } else {
+            gamesB++;
+        }
+
+        let winnerName = winner === "A" ? "TEAM A" : "TEAM B";
+
+        gameHistory.push({
+            game: gameNumber,
+            scoreA: scoreA,
+            scoreB: scoreB,
+            winner: winnerName
+        });
+
+        $("#matchStatus")
+            .removeClass("badge-success")
+            .addClass("badge-warning")
+            .text(winnerName + " WINS");
+
+        if (winner === "A") {
+            $("#teamACard").addClass("winner");
+        } else {
+            $("#teamBCard").addClass("winner");
+        }
+
+        updateGameHistory();
+        saveData();
+    }
+
+    function startNewGame() {
+        if (!gameOver) {
+            if (!confirm("Current game is not finished. Start a new game?")) {
+                return;
+            }
+        }
+
+        scoreA = 0;
+        scoreB = 0;
+        gameNumber++;
+        gameOver = false;
+        pointHistory = [];
+        servingTeam =
+            servingTeam === "A"
+                ? "B"
+                : "A";
+        serverNumber = 1;
+        $("#teamACard").removeClass("winner");
+        $("#teamBCard").removeClass("winner");
+        $("#matchStatus")
+            .removeClass("badge-warning")
+            .addClass("badge-success")
+            .text("IN PROGRESS");
+        updateDisplay();
+        saveData();
+    }
+
+    function undoPoint() {
+        if (pointHistory.length === 0) {
+            return;
+        }
+
+        if (gameOver) {
+            return;
+        }
+
+        let previous = pointHistory.pop();
+
+        scoreA = previous.scoreA;
+        scoreB = previous.scoreB;
+        servingTeam = previous.servingTeam;
+        serverNumber = previous.serverNumber;
+
+        updateDisplay();
+        saveData();
+    }
+
+    function addPointHistory(team) {
+        let text;
+        if (team === "A") {
+            text = "Team A scored → " + scoreA + " - " + scoreB;
+        } else {
+            text = "Team B scored → " + scoreA + " - " + scoreB;
+        }
+
+        $("#pointHistory").prepend(
+            '<li class="list-group-item history-item">' +
+            '<i class="fas fa-plus-circle text-success"></i> ' +
+            text +
+            '</li>'
+        );
+    }
+
+    function updateGameHistory() {
+        let html = "";
+        $.each(gameHistory, function (index, game) {
+            html += `
+                <tr>
+                    <td>${game.game}</td>
+                    <td>${game.scoreA}</td>
+                    <td>${game.scoreB}</td>
+                    <td>
+                        <span class="badge badge-warning">
+                            ${game.winner}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+        $("#historyBody").html(html);
+    }
+
+    function updateDisplay() {
+        $("#scoreA").text(scoreA);
+        $("#scoreB").text(scoreB);
+
+        $("#gameNumber").text(gameNumber);
+        $("#targetDisplay").text(pointTarget);
+
+        $("#gamesA").text(gamesA + (gamesA === 1 ? " Game" : " Games"));
+        $("#gamesB").text(gamesB + (gamesB === 1 ? " Game" : " Games"));
+
+        if (servingTeam === "A") {
+            $("#serverA").show();
+            $("#serverB").hide();
+            $("#currentServer").text("Team A - Server: " +textServerA);
+        } else {
+            $("#serverA").hide();
+            $("#serverB").show();
+            $("#currentServer").text("Team B - Server: " +textServerB);
+        }
+
+        textServerA = teamAFServer === 1 ? teamAFServerName1 : teamAFServerName2;
+        textServerB = teamBFServer === 1 ? teamBFServerName1 : teamBFServerName2;
+
+        $("#serverNumberA").text(textServerA);
+        $("#serverNumberB").text(textServerB);
+        updateGameHistory();
+    }
+
+    function switchServer() {
+        if(servingTeam === "A"){
+            servingTeam = "B";
+        } else {
+            servingTeam = "A";
+        }
+        serverNumber = 1;
+        $("#serveNumber").text(1)
+        $("#secondServe").prop("disabled", false);
+        $("#switchServer").prop("disabled", true);
+        updateDisplay();
+        saveData();
+    }
+
+    function secondServe(){
+        $("#serveNumber").text(2);
+        $("#secondServe").prop("disabled", true);
+        $("#switchServer").prop("disabled", false);
+
+        if(servingTeam === "A"){
+            teamAFServer = teamAFServer === 1 ? 2 : 1;
+        } else {
+            teamBFServer = teamBFServer === 1 ? 2 : 1;
+        }
+
+        updateDisplay();
+        saveData();
+    }
+
+    function saveData() {
+        let data = {
+            scoreA,
+            scoreB,
+            gamesA,
+            gamesB,
+            gameNumber,
+            pointTarget,
+            winningRule,
+            servingTeam,
+            serverNumber,
+            gameOver,
+            gameHistory
+        };
+
+        localStorage.setItem("pickleball_match", JSON.stringify(data));
+    }
+
+    function loadData() {
+        let saved =localStorage.getItem("pickleball_match");
+        if (!saved) {
+            initializeMatch();
+            return;
+        }
+
+        let data = JSON.parse(saved);
+
+        scoreA = data.scoreA || 0;
+        scoreB = data.scoreB || 0;
+        gamesA = data.gamesA || 0;
+        gamesB = data.gamesB || 0;
+        gameNumber = data.gameNumber || 1;
+        pointTarget = data.pointTarget || 11;
+        winningRule = data.winningRule || "win2";
+        servingTeam = data.servingTeam || "A";
+        serverNumber = data.serverNumber || 1;
+        gameOver = data.gameOver || false;
+        gameHistory = data.gameHistory || [];
+
+        $("#pointTarget").val(pointTarget);
+        $("#winningRule").val(winningRule);
+        $("#startingServer").val(servingTeam);
+
+        updatePlayerNames();
+        updateDisplay();
+    }
+
+    function resetMatch() {
+        if (!confirm(
+            "Are you sure you want to reset the entire match?"
+        )) {
+            return;
+        }
+
+        localStorage.removeItem("pickleball_match" );
+        initializeMatch();
+        $("#pointHistory").html("");
+    }
+
+
+    $("#addA").click(function () {
+        firstServePositionA = firstServePositionA === 1 ? 2 : 1;
+        addPoint("A");
+    });
+
+    $("#addB").click(function () {
+        firstServePositionB = firstServePositionB === 1 ? 2 : 1;
+        addPoint("B");
+    });
+
+    $("#minusA").click(function () {
+        removePoint("A");
+    });
+
+    $("#minusB").click(function () {
+        removePoint("B");
+    });
+
+    $("#undoPoint").click(function () {
+        undoPoint();
+    });
+
+    $("#newGame").click(function () {
+        startNewGame();
+    });
+
+    $("#resetMatch").click(function () {
+        resetMatch();
+    });
+
+    $("#switchServer").click(function () {
+        teamAFServer = firstServePositionA === 1 ? 1 : 2;
+        teamBFServer = firstServePositionB === 1 ? 1 : 2;
+        switchServer();
+    });
+
+    $("#secondServe").click(function () {
+        secondServe();
+    });
+
+
+    $("#startMatch").click(function () {
+        initializeMatch();
+    });
+
+    loadData();
+
+});
+
+</script>
+
+</body>
+</html>
